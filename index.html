@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script defer src="./main.js"></script>
     <link rel="stylesheet" href="./styles.css" />
-    <title>Canvas Toy Test</title>
+    <title>Canvas</title>
   </head>
   <body>
     <div class="container">
@@ -16,47 +16,64 @@
       <div class="canvas">
         <canvas id="canvas-board" height="500" width="500"></canvas>
       </div>
-      <div class="atributes">
-        <h4>Atributes</h4>
-        <h5>Type: <span id="type"></span></h5>
-        <h5>x Pos: <span id="xPos"></span></h5>
-        <h5>y Pos: <span id="yPos"></span></h5>
-        <h5>
-          Radius:
-          <input
-            type="range"
-            min="1"
-            max="100"
-            value="50"
-            class="slider"
-            id="radius"
-          />
-        </h5>
-        <h5>
-          Height:
-          <input
-            type="range"
-            min="1"
-            max="100"
-            value="50"
-            class="slider"
-            id="height"
-          />
-        </h5>
-        <h5>
-          Width:
-          <input
-            type="range"
-            min="1"
-            max="100"
-            value="50"
-            class="slider"
-            id="width"
-          />
-        </h5>
-        <div>
-          <label for="head">Color: </label>
-          <input type="color" id="itemColor" name="head" value="#E83815" />
+      <div class="atributes-container">
+        <div class="atributes-circ" id="atributesCirc">
+          <button id="deleteCirc">Delete</button>
+          <h5>Type: Circle</h5>
+          <h5>x Pos: <span id="xPosCirc"></span></h5>
+          <h5>y Pos: <span id="yPosCirc"></span></h5>
+          <h5>
+            Radius:
+            <input
+              type="range"
+              min="1"
+              max="100"
+              value="50"
+              class="slider"
+              id="radius"
+            />
+          </h5>
+          <div>
+            <label for="head" class="color">Color: </label>
+            <input
+              type="color"
+              id="itemCircColor"
+              name="head"
+              value="#000000"
+            />
+          </div>
+        </div>
+        <div class="atributes-rec" id="atributesRec">
+          <button id="deleteRec">Delete</button>
+          <h5>Type: Rectangle</h5>
+          <h5>x Pos: <span id="xPosRec"></span></h5>
+          <h5>y Pos: <span id="yPosRec"></span></h5>
+          <h5>
+            Height:
+            <input
+              type="range"
+              min="1"
+              max="100"
+              value="50"
+              class="slider"
+              id="height"
+            />
+          </h5>
+          <h5>
+            Width:
+            <input
+              type="range"
+              min="1"
+              max="100"
+              value="60"
+              class="slider"
+              id="width"
+            />
+          </h5>
+          <div>
+            <label for="head" class="color">Color: </label>
+            <input type="color" id="itemRecColor" name="head" value="#000000" />
+          </div>
         </div>
       </div>
     </div>

@@ -5,7 +5,7 @@ let cw = canvas.width;
 let ch = canvas.height;
 canvas.style.border = "1px solid black";
 
-//get buttons and sliders
+//get html ids
 let rect = document.getElementById("rect");
 let circ = document.getElementById("circ");
 let delCirc = document.getElementById("deleteCirc");
@@ -23,12 +23,6 @@ let wSlide = document.getElementById("width");
 let atCirc = document.getElementById("atributesCirc");
 let atRec = document.getElementById("atributesRec");
 
-//variables
-let isDragging = false;
-let startX, startY;
-let selectedShapeIndex;
-
-//setup canvas bounding areas on resize
 function reOffset() {
   let BB = canvas.getBoundingClientRect();
   offsetX = BB.left;
@@ -46,16 +40,10 @@ canvas.onresize = function (e) {
   reOffset();
 };
 
-//canvas mouse movements
-canvas.onmousedown = handleMouseDown;
-canvas.onmousemove = handleMouseMove;
-canvas.onmouseup = handleMouseUp;
-canvas.onmouseout = handleMouseOut;
-
-//shapes array to store shape objects
+//setup adding shapes with buttons
 let shapes = [];
 
-//Event Listener to add shape objects to the shapes array
+//event listeners
 rect.addEventListener("click", function () {
   shapes.push({
     name: "rectangle",
@@ -63,7 +51,7 @@ rect.addEventListener("click", function () {
     y: Math.floor(Math.random() * 450),
     width: 60,
     height: 50,
-    color: "black",
+    color: itemRecColor,
   });
   drawAll();
 });
@@ -73,14 +61,22 @@ circ.addEventListener("click", function () {
     name: "circle",
     x: Math.floor(Math.random() * 450),
     y: Math.floor(Math.random() * 450),
-    radius: 50,
-    color: itemColor.value,
-    border: null,
+    radius: parseInt(radSlide.value),
+    color: itemCircColor,
   });
   drawAll();
 });
 
-const isMouseInShape = (mx, my, shape) => {
+let isDragging = false;
+let startX, startY;
+let selectedShapeIndex;
+
+canvas.onmousedown = handleMouseDown;
+canvas.onmousemove = handleMouseMove;
+canvas.onmouseup = handleMouseUp;
+canvas.onmouseout = handleMouseOut;
+
+function isMouseInShape(mx, my, shape) {
   if (shape.radius) {
     // this is a circle
     let dx = mx - shape.x;
@@ -103,9 +99,57 @@ const isMouseInShape = (mx, my, shape) => {
   }
   // the mouse isn't in any of the shapes
   return false;
-};
+}
 
-const handleMouseUp = (e) => {
+function handleMouseDown(e) {
+  // tell the browser we're handling this event
+  e.preventDefault();
+  e.stopPropagation();
+  // calculate the current mouse position
+  startX = parseInt(e.clientX - offsetX);
+  startY = parseInt(e.clientY - offsetY);
+  // test mouse position against all shapes
+  // post result if mouse is in a shape
+  for (let i = 0; i < shapes.length; i++) {
+    if (isMouseInShape(startX, startY, shapes[i])) {
+      // the mouse is inside this shape
+      // select this shape
+      selectedShapeIndex = i;
+      let selectedShape = shapes[selectedShapeIndex];
+      console.log(selectedShape);
+      // type.innerText = selectedShape.name;
+      if (selectedShape.name === "circle") {
+        atCirc.style.visibility = "visible";
+        selectedShape.radius = parseInt(radSlide.value);
+        selectedShape.color = itemCircColor.value;
+        delCirc.addEventListener("click", function () {
+          shapes.splice(selectedShapeIndex, 1);
+          atCirc.style.visibility = "hidden";
+          drawAll();
+        });
+      } else if (selectedShape.name === "rectangle") {
+        atRec.style.visibility = "visible";
+        selectedShape.width = parseInt(wSlide.value);
+        selectedShape.height = parseInt(hSlide.value);
+        selectedShape.color = itemRecColor.value;
+        delRec.addEventListener("click", function () {
+          shapes.splice(selectedShapeIndex, 1);
+          atRec.style.visibility = "hidden";
+          drawAll();
+        });
+      }
+
+      console.log(selectedShapeIndex);
+
+      // set the isDragging flag
+      isDragging = true;
+
+      return;
+    }
+  }
+}
+
+function handleMouseUp(e) {
   // return if we're not dragging
   if (!isDragging) {
     return;
@@ -115,9 +159,9 @@ const handleMouseUp = (e) => {
   e.stopPropagation();
   // the drag is over -- clear the isDragging flag
   isDragging = false;
-};
+}
 
-const handleMouseOut = (e) => {
+function handleMouseOut(e) {
   // return if we're not dragging
   if (!isDragging) {
     return;
@@ -127,9 +171,9 @@ const handleMouseOut = (e) => {
   e.stopPropagation();
   // the drag is over -- clear the isDragging flag
   isDragging = false;
-};
+}
 
-const handleMouseMove = (e) => {
+function handleMouseMove(e) {
   // return if we're not dragging
   if (!isDragging) {
     return;
@@ -148,6 +192,7 @@ const handleMouseMove = (e) => {
   selectedShape.x += dx;
   selectedShape.y += dy;
 
+  //set position for circ and rect in HTML
   if (selectedShape.name === "circle") {
     xPosCirc.innerText = selectedShape.x;
     yPosCirc.innerText = selectedShape.y;
@@ -161,7 +206,7 @@ const handleMouseMove = (e) => {
   // update the starting drag position (== the current mouse position)
   startX = mouseX;
   startY = mouseY;
-};
+}
 
 //draw shapes at their current position
 const drawAll = () => {

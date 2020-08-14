@@ -105,7 +105,7 @@ const isMouseInShape = (mx, my, shape) => {
   return false;
 };
 
-function handleMouseUp(e) {
+const handleMouseUp = (e) => {
   // return if we're not dragging
   if (!isDragging) {
     return;
@@ -115,9 +115,9 @@ function handleMouseUp(e) {
   e.stopPropagation();
   // the drag is over -- clear the isDragging flag
   isDragging = false;
-}
+};
 
-function handleMouseOut(e) {
+const handleMouseOut = (e) => {
   // return if we're not dragging
   if (!isDragging) {
     return;
@@ -127,7 +127,7 @@ function handleMouseOut(e) {
   e.stopPropagation();
   // the drag is over -- clear the isDragging flag
   isDragging = false;
-}
+};
 
 const handleMouseMove = (e) => {
   // return if we're not dragging
@@ -161,7 +161,7 @@ const handleMouseMove = (e) => {
   // update the starting drag position (== the current mouse position)
   startX = mouseX;
   startY = mouseY;
-}
+};
 
 //draw shapes at their current position
 const drawAll = () => {

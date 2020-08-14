@@ -74,7 +74,7 @@ circ.addEventListener("click", function () {
   drawAll();
 });
 
-function isMouseInShape(mx, my, shape) {
+const isMouseInShape = (mx, my, shape) => {
   if (shape.radius) {
     // this is a circle
     let dx = mx - shape.x;
@@ -97,7 +97,35 @@ function isMouseInShape(mx, my, shape) {
   }
   // the mouse isn't in any of the shapes
   return false;
-}
+};
+
+const handleMouseMove = (e) => {
+  // return if we're not dragging
+  if (!isDragging) {
+    return;
+  }
+  // tell the browser we're handling this event
+  e.preventDefault();
+  e.stopPropagation();
+  // calculate the current mouse position
+  mouseX = parseInt(e.clientX - offsetX);
+  mouseY = parseInt(e.clientY - offsetY);
+  // how far has the mouse dragged from its previous mousemove position?
+  let dx = mouseX - startX;
+  let dy = mouseY - startY;
+  // move the selected shape by the drag distance
+  let selectedShape = shapes[selectedShapeIndex];
+  selectedShape.x += dx;
+  selectedShape.y += dy;
+
+  xPos.innerText = selectedShape.x;
+  yPos.innerText = selectedShape.y;
+  // clear the canvas and redraw all shapes
+  drawAll();
+  // update the starting drag position (== the current mouse position)
+  startX = mouseX;
+  startY = mouseY;
+};
 
 //draw shapes at their current position
 const drawAll = () => {

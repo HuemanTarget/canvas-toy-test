@@ -74,6 +74,31 @@ circ.addEventListener("click", function () {
   drawAll();
 });
 
+function isMouseInShape(mx, my, shape) {
+  if (shape.radius) {
+    // this is a circle
+    let dx = mx - shape.x;
+    let dy = my - shape.y;
+    // math test to see if mouse is inside circle
+    if (dx * dx + dy * dy < shape.radius * shape.radius) {
+      // yes, mouse is inside this circle
+      return true;
+    }
+  } else if (shape.width) {
+    // this is a rectangle
+    let rLeft = shape.x;
+    let rRight = shape.x + shape.width;
+    let rTop = shape.y;
+    let rBott = shape.y + shape.height;
+    // math test to see if mouse is inside rectangle
+    if (mx > rLeft && mx < rRight && my > rTop && my < rBott) {
+      return true;
+    }
+  }
+  // the mouse isn't in any of the shapes
+  return false;
+}
+
 //draw shapes at their current position
 const drawAll = () => {
   ctx.clearRect(0, 0, ch, cw);
@@ -90,27 +115,3 @@ const drawAll = () => {
     }
   }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

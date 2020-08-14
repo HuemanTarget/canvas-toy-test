@@ -8,14 +8,20 @@ canvas.style.border = "1px solid black";
 //get buttons and sliders
 let rect = document.getElementById("rect");
 let circ = document.getElementById("circ");
-let del = document.getElementById("delete");
+let delCirc = document.getElementById("deleteCirc");
+let delRec = document.getElementById("deleteRec");
 let type = document.getElementById("type");
-let xPos = document.getElementById("xPos");
-let yPos = document.getElementById("yPos");
-let itemColor = document.getElementById("itemColor");
+let xPosCirc = document.getElementById("xPosCirc");
+let yPosCirc = document.getElementById("yPosCirc");
+let xPosRec = document.getElementById("xPosRec");
+let yPosRec = document.getElementById("yPosRec");
+let itemCircColor = document.getElementById("itemCircColor");
+let itemRecColor = document.getElementById("itemRecColor");
 let radSlide = document.getElementById("radius");
 let hSlide = document.getElementById("height");
 let wSlide = document.getElementById("width");
+let atCirc = document.getElementById("atributesCirc");
+let atRec = document.getElementById("atributesRec");
 
 //variables
 let isDragging = false;
@@ -99,6 +105,30 @@ const isMouseInShape = (mx, my, shape) => {
   return false;
 };
 
+function handleMouseUp(e) {
+  // return if we're not dragging
+  if (!isDragging) {
+    return;
+  }
+  // tell the browser we're handling this event
+  e.preventDefault();
+  e.stopPropagation();
+  // the drag is over -- clear the isDragging flag
+  isDragging = false;
+}
+
+function handleMouseOut(e) {
+  // return if we're not dragging
+  if (!isDragging) {
+    return;
+  }
+  // tell the browser we're handling this event
+  e.preventDefault();
+  e.stopPropagation();
+  // the drag is over -- clear the isDragging flag
+  isDragging = false;
+}
+
 const handleMouseMove = (e) => {
   // return if we're not dragging
   if (!isDragging) {
@@ -118,14 +148,20 @@ const handleMouseMove = (e) => {
   selectedShape.x += dx;
   selectedShape.y += dy;
 
-  xPos.innerText = selectedShape.x;
-  yPos.innerText = selectedShape.y;
+  if (selectedShape.name === "circle") {
+    xPosCirc.innerText = selectedShape.x;
+    yPosCirc.innerText = selectedShape.y;
+  } else if (selectedShape.name === "rectangle") {
+    xPosRec.innerText = selectedShape.x;
+    yPosRec.innerText = selectedShape.y;
+  }
+
   // clear the canvas and redraw all shapes
   drawAll();
   // update the starting drag position (== the current mouse position)
   startX = mouseX;
   startY = mouseY;
-};
+}
 
 //draw shapes at their current position
 const drawAll = () => {
